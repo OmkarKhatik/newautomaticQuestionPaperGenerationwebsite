@@ -8,5 +8,6 @@ import com.newautomaticpapergenerationwebsite.model.Question;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 	List<Question> findByBranchAndSemesterAndSubjectAndDifficulty(String branch, String semester, String subject, String difficulty);
-	
+	List<Question> findByBranchAndSemesterAndSubject(String branch, String semester, String subject);
+
 }

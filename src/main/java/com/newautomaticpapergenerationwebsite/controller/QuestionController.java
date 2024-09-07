@@ -24,28 +24,28 @@ import java.util.List;
 @RequestMapping("/api/questions")
 public class QuestionController {
 
-	@Autowired
-	private QuestionService questionService;
-	
-	
-	 @GetMapping
-	    public List<Question> getQuestions(
-	            @RequestParam String branch,
-	            @RequestParam String semester,
-	            @RequestParam String subject) {
-	        return questionService.findQuestionsByCriteria(branch, semester, subject);
-	    }
+    @Autowired
+    private QuestionService questionService;
 
-	@PostMapping("/add")
-	public ResponseEntity<Question> addQuestion(@RequestBody Question question) {
-		return ResponseEntity.ok(questionService.addQuestion(question));
-	}
 
-	@GetMapping("/generate")
-	public ResponseEntity<List<Question>> generateQuestionPaper(@RequestParam String branch,
-			@RequestParam String semester, @RequestParam String subject, @RequestParam String difficulty) {
-		return ResponseEntity.ok(questionService.generateQuestionPaper(branch, semester, subject, difficulty));
-	}
+    @GetMapping
+    public List<Question> getQuestions(
+            @RequestParam String branch,
+            @RequestParam String semester,
+            @RequestParam String subject) {
+        return questionService.findQuestionsByCriteria(branch, semester, subject);
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<Question> addQuestion(@RequestBody Question question) {
+        return ResponseEntity.ok(questionService.addQuestion(question));
+    }
+
+    @GetMapping("/generate")
+    public ResponseEntity<List<Question>> generateQuestionPaper(@RequestParam String branch,
+                                                                @RequestParam String semester, @RequestParam String subject, @RequestParam String difficulty) {
+        return ResponseEntity.ok(questionService.generateQuestionPaper(branch, semester, subject, difficulty));
+    }
 
 //	@GetMapping("/download")
 //	public ResponseEntity<byte[]> downloadQuestionPaper(@RequestParam String branch, @RequestParam String semester,
@@ -63,30 +63,30 @@ public class QuestionController {
 //
 //		return ResponseEntity.ok().headers(headers).body(pdfBytes);
 //	}
-	
-//	new getmapping
-	@GetMapping("/download")
-	public ResponseEntity<byte[]> downloadQuestionPaper(
-	        @RequestParam String branch,
-	        @RequestParam String semester,
-	        @RequestParam String subject,
-	        @RequestParam String difficulty,
-	        @RequestParam String name,
-	        @RequestParam String code,
-	        @RequestParam int marks,
-	        @RequestParam int choice,
-	        @RequestParam String time) {
 
-	    List<Question> questions = questionService.generateQuestionPaper(branch, semester, subject, difficulty);
+    //	new getmapping
+    @GetMapping("/download")
+    public ResponseEntity<byte[]> downloadQuestionPaper(
+            @RequestParam String branch,
+            @RequestParam String semester,
+            @RequestParam String subject,
+            @RequestParam String difficulty,
+            @RequestParam String name,
+            @RequestParam String code,
+            @RequestParam int marks,
+            @RequestParam int choice,
+            @RequestParam String time) {
 
-	    // Pass these inputs to the PDF generator
-	    byte[] pdfBytes = PDFGenerator.generateQuestionPaperPDF(questions, name, code, marks, choice, time);
+        List<Question> questions = questionService.generateQuestionPaper(branch, semester, subject, difficulty);
 
-	    HttpHeaders headers = new HttpHeaders();
-	    headers.setContentType(MediaType.APPLICATION_PDF);
-	    headers.setContentDispositionFormData("attachment", "question_paper.pdf");
+        // Pass these inputs to the PDF generator
+        byte[] pdfBytes = PDFGenerator.generateQuestionPaperPDF(questions, name, code, marks, choice, time);
 
-	    return ResponseEntity.ok().headers(headers).body(pdfBytes);
-	}
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", "question_paper.pdf");
+
+        return ResponseEntity.ok().headers(headers).body(pdfBytes);
+    }
 
 }
