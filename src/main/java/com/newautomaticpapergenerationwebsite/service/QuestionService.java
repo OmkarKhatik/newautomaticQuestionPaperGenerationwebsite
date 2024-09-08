@@ -40,7 +40,13 @@ public class QuestionService {
     private Map<Long, Double> pheromoneLevels;
 
     public List<Question> generateQuestionPaper(String branch, String semester, String subject, String difficulty) {
-        List<Question> questions = questionRepository.findByBranchAndSemesterAndSubject(branch, semester, subject);
+//        List<Question> questions = questionRepository.findByBranchAndSemesterAndSubject(branch, semester, subject);
+        List<Question> questions = null;
+        if ("all".equals(difficulty)) {
+            questions = questionRepository.findByBranchAndSemesterAndSubject(branch, semester, subject);
+        } else {
+            questions = questionRepository.findByBranchAndSemesterAndSubjectAndDifficultyContains(branch, semester, subject, difficulty);
+        }
         if (questions.isEmpty()) {
             return new ArrayList<>(); // No questions found
         }
@@ -75,8 +81,19 @@ public class QuestionService {
         return bestSolutions;
     }
 
-    public Question addQuestion(Question question) {
-        return questionRepository.save(question);
+    public Question validateAndAddQuestion(Question question) {
+
+        Question existingQuestion = questionRepository.findByQuestionText(question.getQuestionText());
+        if (existingQuestion == null) {
+            return questionRepository.save(question);
+        } else {
+            if (existingQuestion.getDifficulty().equals(question.getDifficulty())) {
+                return existingQuestion;
+            } else {
+                existingQuestion.setDifficulty(existingQuestion.getDifficulty() + "|" + question.getDifficulty());
+                return questionRepository.save(existingQuestion);
+            }
+        }
     }
 
 }
