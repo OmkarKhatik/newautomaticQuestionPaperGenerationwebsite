@@ -87,7 +87,7 @@ public class QuestionService {
         if (existingQuestion == null) {
             return questionRepository.save(question);
         } else {
-            if (existingQuestion.getDifficulty().equals(question.getDifficulty())) {
+            if (existingQuestion.getDifficulty().contains(question.getDifficulty())) {
                 return existingQuestion;
             } else {
                 existingQuestion.setDifficulty(existingQuestion.getDifficulty() + "|" + question.getDifficulty());

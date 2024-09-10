@@ -37,23 +37,23 @@ public class QuestionController {
     }
 
 
-    @PostMapping("/addQ")
-    public ResponseEntity<Question> addQuestions() {
-        Question res = null;
-        for (int i = 1; i < 51; i++) {
-            Question question = new Question();
-            question.setQuestionText("What is Java" + i);
-            question.setDifficulty("all");
-            question.setBranch("Computer Technology");
-            question.setModule("1");
-            question.setSubject("Java");
-            question.setSemester("1");
-
-            res = questionService.validateAndAddQuestion(question);
-
-        }
-        return ResponseEntity.ok(res);
-    }
+//    @PostMapping("/addQ")
+//    public ResponseEntity<Question> addQuestions() {
+//        Question res = null;
+//        for (int i = 100; i < 130; i++) {
+//            Question question = new Question();
+//            question.setQuestionText("What is Java" + i);
+//            question.setDifficulty("hard|all");
+//            question.setBranch("Computer Technology");
+//            question.setModule("1");
+//            question.setSubject("Java");
+//            question.setSemester("1");
+//
+//            res = questionService.validateAndAddQuestion(question);
+//
+//        }
+//        return ResponseEntity.ok(res);
+//    }
 
     @PostMapping("/add")
     public ResponseEntity<Question> addQuestion(@RequestBody Question question) {
