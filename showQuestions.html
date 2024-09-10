@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Question Paper</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('https://www.ednavigator.org/assets/blog-images/_850x566_crop_center-center_82_line_ns/Blurred_Exam_Papers_Web.jpg'); /* Replace with your actual image path */
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+    color: #000;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+
+header {
+    text-align: center;
+    /* background-color: #fff; */
+    padding: 20px;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-family: 'Georgia', serif;
+    font-size: 36px;
+    font-weight: bold;
+    color: #333;
+    text-shadow: 1px 1px 2px #aaa;
+}
+
+aside {
+    /* background-color: #f9f9f9; */
+    padding: 20px;
+    width: 20%;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.menu {
+    text-align: center;
+}
+
+.menu h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.menu ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.menu ul li {
+    margin-bottom: 15px;
+}
+
+.menu ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.menu ul li a:hover {
+    color: #ff0000;
+}
+
+.main-content {
+    /* background-color: #fff; */
+    padding: 20px;
+    width: 80%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.main-content h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    text-decoration: underline;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 10px;
+}
+
+form label {
+    text-align: right;
+    padding-right: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+form select {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+form button {
+    grid-column: 2 / 3;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+form button:hover {
+    background-color: #45a049;
+}
+ 
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SHOW QUESTION PAPER</h1>
+        </header>
+
+        <aside>
+            <div class="menu">
+                <h3>Menu</h3>
+                <ul>
+                    <!-- <li><a href="adminpage.html">Add Questions</a></li> -->
+                    <li><a href="getQuestionPaper.html">Create Question Paper</a></li>
+                    <li><a href="showQuestions.html">Show Questions</a></li>
+                    <li><a href="index.html">Logout</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <section class="main-content">
+            <h2>Questions</h2>
+            <form action="#" method="POST">
+                <label for="branch">Paper for Branch:</label>
+                <select id="branch" name="branch">
+                    <option value="#">select </option>
+                    <option value="Computer Technology">CT</option>
+                    <option value="Information Technology">IT</option>
+                    <option value="Mechanical Engineering">ME</option>
+                    <option value="Civil Engineering">CE</option>
+                    <!-- Add more branch options here -->
+                </select>
+
+                <label for="semester">Semester:</label>
+                <select id="semester" name="semester">
+                    <option value="#">select</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <!-- Add more semester options here -->
+                </select>
+
+                <label for="subject">Subject:</label>
+                <select id="subject" name="subject">
+                    <option value="#">select</option>
+                    <option value="DWM">DWM</option>
+                    <option value="AI">AI</option>
+                    <option value="DV">DV</option>
+                    <option value="CNS">CNS</option>
+                    <option value="Java">Java</option>
+                    <!-- Add more subject options here -->
+                </select>
+
+                <button type="submit">Show</button>
+            </form>
+        </section>
+    </div>
+</body>
+<script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    const branch = document.getElementById('branch').value;
+    const semester = document.getElementById('semester').value;
+    const subject = document.getElementById('subject').value;
+
+    fetch(`http://localhost:8080/api/questions?branch=${encodeURIComponent(branch)}&semester=${encodeURIComponent(semester)}&subject=${encodeURIComponent(subject)}`)
+        .then(response => response.json())
+        .then(data => {
+            // Create an area to display the questions
+            const questionsSection = document.createElement('section');
+            questionsSection.className = 'questions-section';
+
+            data.forEach(question => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question-item';
+
+                // Display question text
+                const questionText = document.createElement('p');
+                questionText.textContent = `Question: ${question.questionText}`;
+                questionDiv.appendChild(questionText);
+
+                // Display difficulty
+                const difficulty = document.createElement('p');
+                difficulty.textContent = `Difficulty: ${question.difficulty}`;
+                questionDiv.appendChild(difficulty);
+
+                questionsSection.appendChild(questionDiv);
+            });
+
+            // If a previous questions section exists, replace it
+            const existingSection = document.querySelector('.questions-section');
+            if (existingSection) {
+                existingSection.replaceWith(questionsSection);
+            } else {
+                document.body.appendChild(questionsSection);
+            }
+        })
+        .catch(error => console.error('Error fetching questions:', error));
+});
+
+</script>
+</html>

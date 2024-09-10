@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Question Paper</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    background-image: url('https://www.ednavigator.org/assets/blog-images/_850x566_crop_center-center_82_line_ns/Blurred_Exam_Papers_Web.jpg'); /* Replace with your actual image path */
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+    color: #000;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+
+header {
+    text-align: center;
+    /* background-color: #fff; */
+    padding: 20px;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-family: 'Georgia', serif;
+    font-size: 36px;
+    font-weight: bold;
+    color: #333;
+    text-shadow: 1px 1px 2px #aaa;
+}
+
+nav {
+    /* background-color: #f9f9f9; */
+    padding: 20px;
+    width: 20%;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.menu {
+    text-align: center;
+}
+
+.menu h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.menu ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.menu ul li {
+    margin-bottom: 15px;
+}
+
+.menu ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.menu ul li a:hover {
+    color: #ff0000;
+}
+
+.main-content {
+    /* background-color: #fff; */
+    padding: 20px;
+    width: 80%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.main-content h2 {
+    text-align: center;
+    /* color: #333; */
+    margin-bottom: 20px;
+    text-decoration: underline;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 10px;
+}
+
+form label {
+    text-align: right;
+    padding-right: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+form select,
+form input[type="text"],
+form input[type="number"] {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #9eb25783;
+    border-radius: 4px;
+}
+
+.buttons {
+    grid-column: 2 / 3;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.buttons button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.buttons button:hover {
+    background-color: #45a049;
+}
+
+</style>
+<body>54
+
+    
+    <div class="container">
+        <header>
+            <h1>EXTRACT QUESTION PAPER</h1>
+        </header>
+
+        <nav>
+            <div class="menu">
+                <h3>Menu</h3>
+                <ul>
+                    <li><a href="adminpage.html">Add Questions</a></li>
+                    <li><a href="getQuestionPaper.html">Create Question Paper</a></li>
+                    <li><a href="showQuestions.html">Show Questions</a></li>
+                    <li><a href="index.html">Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <section class="main-content">
+            <h2>Get Question Paper</h2>
+            <form>
+                <!-- Form elements like before -->
+                <label for="branch">Paper for Branch:</label>
+                <select id="branch" name="branch">
+                    <option value="Computer Technology">Computer Technology</option>
+                    <option value="it">IT</option>
+                    <option value="me">ME</option>
+                    <option value="ce">CE</option>
+                    <!-- Add more branch options here -->
+                </select>
+
+                <label for="semester">Semester:</label>
+                <select id="semester" name="semester">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <!-- Add more semester options here -->
+                </select>
+
+                <label for="subject">Subject:</label>
+                <select id="subject" name="subject">
+                    <option value="Java">Java</option>
+                    <option value="AI">AI</option>
+                    <option value="DV">DV</option>
+                    <option value="CNS">CNS</option>
+                    <!-- Add more subject options here -->
+                </select>
+
+                <label for="difficulty">Difficulty Of Paper:</label>
+                <select id="difficulty" name="difficulty">
+                    <option value="all">All</option>
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                    <!-- Add more difficulty levels here -->
+                </select>
+
+                <label for="modules">No Of Modules:</label>
+                <select id="modules" name="modules">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <!-- Add more module options here -->
+                </select>
+
+                <label for="questions">Questions Per Module:</label>
+                <select id="questions" name="questions">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="1">6</option>
+                    <option value="2">7</option>
+                    <option value="3">8</option>
+                    <option value="4">9</option>
+                    <option value="5">10</option>
+                    <!-- Add more question options here -->
+                </select>
+
+                <label for="name">Name Of Question Paper:</label>
+                <input type="text" id="name" name="name">
+
+                <label for="code">Question Paper Code:</label>
+                <input type="text" id="code" name="code">
+
+                <label for="marks">Marks Per Module:</label>
+                <input type="number" id="marks" name="marks">
+
+                <label for="choice">Choice per Module:</label>
+                <input type="number" id="choice" name="choice">
+
+                <label for="time">Time For Exam:</label>
+                <input type="text" id="time" name="time">
+
+
+                <!-- Make sure all elements have the correct IDs -->
+                <div class="buttons">
+                    <button id="downloadButton" type="button">Download</button>
+                    <button id="emailButton" type="button">Email Question Paper</button>
+                </div>
+                <div id="questionPaper">
+                    <!-- The generated question paper will be displayed here -->
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <script>
+document.getElementById('downloadButton').addEventListener('click', function() {
+    const branch = encodeURIComponent(document.getElementById('branch').value);
+    const semester = encodeURIComponent(document.getElementById('semester').value);
+    const subject = encodeURIComponent(document.getElementById('subject').value);
+    const difficulty = encodeURIComponent(document.getElementById('difficulty').value);
+    const name = encodeURIComponent(document.getElementById('name').value);
+    const code = encodeURIComponent(document.getElementById('code').value);
+
+    // Ensure marks and choice are parsed as integers
+    const marks = parseInt(document.getElementById('marks').value, 10);
+    const choice = parseInt(document.getElementById('choice').value, 10);
+
+    const time = encodeURIComponent(document.getElementById('time').value);
+
+    // Check for NaN (Not-a-Number) and handle appropriately if necessary
+    if (isNaN(marks) || isNaN(choice)) {
+        alert("Please enter valid numbers for marks and choice.");
+        return;
+    }
+
+    const url = `http://localhost:8080/api/questions/download?branch=${branch}&semester=${semester}&subject=${subject}&difficulty=${difficulty}&name=${name}&code=${code}&marks=${marks}&choice=${choice}&time=${time}`;
+
+    fetch(url)
+        .then(response => response.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(new Blob([blob]));
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = 'QuestionPaper.pdf';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        })
+        .catch(error => console.error('Error downloading question paper:', error));
+});
+
+        document.getElementById('emailButton').addEventListener('click', function() {
+            const branch = document.getElementById('branch').value;
+            const semester = document.getElementById('semester').value;
+            const subject = document.getElementById('subject').value;
+            const difficulty = document.getElementById('difficulty').value;
+            const userEmail = prompt('Please enter your email address:');
+
+            fetch('/api/questions/email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    branch: branch,
+                    semester: semester,
+                    subject: subject,
+                    difficulty: difficulty,
+                    email: userEmail
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Email sent successfully!');
+            })
+            .catch(error => console.error('Error sending email:', error));
+        });
+    </script>
+</body>
+</html>
+
+
