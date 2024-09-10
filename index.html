@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automatic Question Paper Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Welcome to AutoGen Papers</h1>
+            <h2>Automatic Question Paper Generator</h2>
+            <p>The "Automatic Question Paper Generator" has been developed to overcome and eliminate problems faced in the manual system.</p>
+        </header>
+        <div class="login-section">
+            <form class="login-form">
+                <label for="user-id">User ID:</label>
+                <input type="text" id="user-id" name="user-id" required>
+                
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                
+                <label for="user-type">User Type:</label>
+                <select id="user-type" name="user-type">
+                    <option value="A">Admin</option>
+                    <option value="I">Teacher</option>
+                </select>
+                
+                <input type="submit" value="Login" style="width: 220px; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 10px; cursor: pointer; margin: 5px;">
+            </form>
+        </div>
+    </div>
+    <script>
+        document.querySelector('.login-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Get user input values
+            const userId = document.getElementById('user-id').value;
+            const password = document.getElementById('password').value;
+            const userType = document.getElementById('user-type').value;
+
+            // Example API endpoint
+            const apiUrl = 'http://localhost:8080/login'; 
+
+            // Prepare data to send to API
+            const loginData = {
+                userId: userId,
+                password: password
+            };
+
+            // Send login data to API
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(loginData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.text(); // Expect the user type in response
+                } else {
+                    throw new Error('Login failed. Please check your credentials.');
+                }
+            })
+            .then(userType => {
+                if (userType === 'A') {
+                    window.location.href = 'adminpage.html';
+                } else if (userType === 'I') {
+                    window.location.href = 'showQuestions.html';
+                } else {
+                    alert('Unknown user type.');
+                }
+            })
+            .catch(error => alert(error.message));
+        });
+    </script>
+</body>
+</html>
