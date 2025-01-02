@@ -1,4 +1,5 @@
 package com.newautomaticpapergenerationwebsite.service;
+import com.newautomaticpapergenerationwebsite.repo.NewLoginRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -7,7 +8,7 @@ import com.newautomaticpapergenerationwebsite.repo.LoginRepo;
 @Service
 public class LoginService {
 	@Autowired
-	private LoginRepo loginRepo;
+	private NewLoginRepo loginRepo;
 
 //	public LoginModel saveUser(LoginModel user) {
 //		return userRepository.save(user);
@@ -24,5 +25,8 @@ public class LoginService {
 	        }
 	        return null;
 	    }
+	  
+	  
+	  
 }
 

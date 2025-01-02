@@ -6,5 +6,5 @@ public interface Constants {
      double alpha = 1.0;
      double beta = 2.0;
      double evaporationRate = 0.5;
-     int numIterations = 100;
+     int numIterations = 10;
 }
