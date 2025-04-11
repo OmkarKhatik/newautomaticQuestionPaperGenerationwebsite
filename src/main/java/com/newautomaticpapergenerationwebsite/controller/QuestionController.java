@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 
 //import java.awt.PageAttributes.MediaType;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -90,10 +91,11 @@ public class QuestionController {
 //            @RequestParam int choice,
             @RequestParam String time) {
 
-        List<Question> questions = questionService.downloadQuestionPaper(branch, semester, subject, difficulty, topic,questionType);
+        List<Question> questions = questionService.downloadQuestionPaper2(branch, semester, subject, difficulty, topic,questionType);
 
+        Map<String, List<Question>> questionsMap = questionService.convertToMap(questions);
         // Pass these inputs to the PDF generator
-        byte[] pdfBytes = PDFGenerator.generateQuestionPaperPDF(questions, subject,name, code, marks, time);
+        byte[] pdfBytes = PDFGenerator.generateQuestionPaperPDF2(questionsMap, subject,name, code, marks, time);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);

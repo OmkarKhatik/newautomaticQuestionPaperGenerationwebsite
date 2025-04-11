@@ -9,14 +9,14 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
-    private String questionText;
-    private String difficulty;
-    private String module;
-    private String semester;
-    private String subject;
-    private String branch;
-    private String topic;
-    private String questionType;
+    private String questionText;		// text
+    private String difficulty;			// easy, medium, hard, all
+    private String module;				// 1, 2, 3
+    private String semester;			// 1, 2, 3
+    private String subject;				// java
+    private String branch;				// Computer Technology
+    private String topic;				// basic, oops
+    private String questionType;		// mcq, descriptive, both
 
     public Question(Long id, String questionText, String difficulty, String module, String semester, String subject, String branch, String topic, String questionType) {
         this.id = id;

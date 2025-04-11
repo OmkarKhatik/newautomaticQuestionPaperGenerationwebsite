@@ -22,7 +22,8 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 	// New method to filter by topic
 	List<Question> findByBranchAndSemesterAndSubjectAndTopicContains(String branch, String semester, String subject, String topic);
 	List<Question> findByBranchAndSemesterAndSubjectAndTopicAndQuestionTypeContains(String branch, String semester, String subject, String topic, String questionType);
+
+	List<Question> findByBranchAndSemesterAndSubjectAndTopicAndQuestionTypeAndDifficultyContains(
+			String branch, String semester, String subject, String topic, String questionType, String difficulty);
 }
-
-
 

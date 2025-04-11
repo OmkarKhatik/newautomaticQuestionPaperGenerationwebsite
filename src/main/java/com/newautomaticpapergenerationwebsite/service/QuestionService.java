@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.newautomaticpapergenerationwebsite.util.Constants.numAnts;
 import static com.newautomaticpapergenerationwebsite.util.Constants.numIterations;
@@ -137,31 +138,54 @@ public class QuestionService {
         return bestSolutions;
     }
 
+
+    public List<Question> downloadQuestionPaper2(String branch, String semester, String subject, String difficulty, String topic, String questionType) {
+        List<Question> questions = new ArrayList<>();
+
+        if ("both".equalsIgnoreCase(questionType)) {
+            questions = questionRepository.findByBranchAndSemesterAndSubjectAndDifficultyContains(
+                    branch, semester, subject, difficulty);
+        } else {
+            questions = questionRepository.findByBranchAndSemesterAndSubjectAndTopicAndQuestionTypeAndDifficultyContains(
+                    branch, semester, subject, topic, questionType, difficulty);
+        }
+        questions.removeIf(q -> q.getTopic() == null || !q.getTopic().toLowerCase().contains(topic.toLowerCase()));
+
+        return bestSolutions(questions, difficulty);
+    }
+
     public List<Question> downloadQuestionPaper(String branch, String semester, String subject, String difficulty, String topic, String questionType) {
         List<Question> questions;
 
         if ("all".equals(difficulty)) {
             if (topic == null || topic.isEmpty()) {
-                questions = questionRepository.findByBranchAndSemesterAndSubject(branch, semester, subject);
+                questions = questionRepository.findByBranchAndSemesterAndSubject(
+                        branch, semester, subject);
             } else {
-                questions = questionRepository.findByBranchAndSemesterAndSubjectAndTopicContains(branch, semester, subject, topic);
+                questions = questionRepository.findByBranchAndSemesterAndSubjectAndTopicContains(
+                        branch, semester, subject, topic);
             }
         } else {
             if (topic == null || topic.isEmpty()) {
-                questions = questionRepository.findByBranchAndSemesterAndSubjectAndDifficultyContains(branch, semester, subject, difficulty);
+                questions = questionRepository.findByBranchAndSemesterAndSubjectAndDifficultyContains(
+                        branch, semester, subject, difficulty);
             } else {
-                questions = questionRepository.findByBranchAndSemesterAndSubjectAndDifficultyContains(branch, semester, subject, difficulty);
+                questions = questionRepository.findByBranchAndSemesterAndSubjectAndDifficultyContains(
+                        branch, semester, subject, difficulty);
 
 
                 questions.removeIf(q -> q.getTopic() == null || !q.getTopic().toLowerCase().contains(topic.toLowerCase()));
             }
         }
         if ("MCQ".equals(questionType)) {
-            questions = questionRepository.findByBranchAndSemesterAndSubjectAndTopicAndQuestionTypeContains(branch, semester, subject, topic, questionType);
+            questions = questionRepository.findByBranchAndSemesterAndSubjectAndTopicAndQuestionTypeContains(
+                    branch, semester, subject, topic, questionType);
         } else if ("Descriptive".equals(questionType)) {
-            questions = questionRepository.findByBranchAndSemesterAndSubjectAndTopicAndQuestionTypeContains(branch, semester, subject, topic, questionType);
+            questions = questionRepository.findByBranchAndSemesterAndSubjectAndTopicAndQuestionTypeContains(
+                    branch, semester, subject, topic, questionType);
         } else {
-            questions = questionRepository.findByBranchAndSemesterAndSubjectAndTopicAndQuestionTypeContains(branch, semester, subject, topic, questionType);
+            questions = questionRepository.findByBranchAndSemesterAndSubjectAndTopicAndQuestionTypeContains(
+                    branch, semester, subject, topic, questionType);
         }
 
 
@@ -169,6 +193,10 @@ public class QuestionService {
             return new ArrayList<>(); // No questions found
         }
 
+        return bestSolutions(questions, difficulty);
+    }
+
+    private List<Question> bestSolutions(List<Question> questions, String difficulty) {
         questionHelper.initializePheromoneLevels(questions);
         List<Question> bestSolutions = new ArrayList<>();
         double bestSolutionScore = 0.0;
@@ -211,4 +239,7 @@ public class QuestionService {
         }
     }
 
+    public Map<String, List<Question>> convertToMap(List<Question> questions) {
+        return questions.stream().collect(Collectors.groupingBy(Question::getQuestionType));
+    }
 }
