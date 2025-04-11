@@ -39,36 +39,92 @@ public class QuestionService {
     // Initialize pheromone levels
     private Map<Long, Double> pheromoneLevels;
 
-    public List<Question> generateQuestionPaper(String branch, String semester, String subject, String difficulty) {
-//        List<Question> questions = questionRepository.findByBranchAndSemesterAndSubject(branch, semester, subject);
-        List<Question> questions = null;
+//    public List<Question> generateQuestionPaper(String branch, String semester, String subject, String difficulty) {
+////        List<Question> questions = questionRepository.findByBranchAndSemesterAndSubject(branch, semester, subject);
+//        List<Question> questions = null;
+//        if ("all".equals(difficulty)) {
+//            questions = questionRepository.findByBranchAndSemesterAndSubject(branch, semester, subject);
+//        } else {
+//            questions = questionRepository.findByBranchAndSemesterAndSubjectAndDifficultyContains(branch, semester, subject, difficulty);
+//        }
+//        if (questions.isEmpty()) {
+//            return new ArrayList<>(); // No questions found
+//        }
+//
+//        questionHelper.initializePheromoneLevels(questions);
+//
+//        List<Question> bestSolutions = new ArrayList<>();
+//        double bestSolutionScore = 0.0;
+//
+//        for (int i = 0; i < numIterations; i++) {
+//            List<List<Question>> solutions = new ArrayList<>();
+//
+//            // Each ant constructs a solution
+//            for (int j = 0; j < numAnts; j++) {
+//                List<Question> solution = questionHelper.constructSolution(questions, difficulty);
+//                solutions.add(solution);
+//            }
+//
+//            // Update pheromones based on solutions
+//            questionHelper.updatePheromones(solutions);
+//
+//            // Determine the best solution in this iteration
+//            for (List<Question> solution : solutions) {
+//                double solutionScore = questionHelper.evaluateSolution(solution);
+//                if (solutionScore > bestSolutionScore) {
+//                    bestSolutionScore = solutionScore;
+//                    bestSolutions = new ArrayList<>(solution);
+//                }
+//            }
+//        }
+//
+//        return bestSolutions;
+//    }
+
+    public List<Question> generateQuestionPaper(String branch, String semester, String subject, String difficulty, String topic) {
+        List<Question> questions;
+
         if ("all".equals(difficulty)) {
-            questions = questionRepository.findByBranchAndSemesterAndSubject(branch, semester, subject);
+            if (topic == null || topic.isEmpty()) {
+                questions = questionRepository.findByBranchAndSemesterAndSubject(branch, semester, subject);
+            } else {
+                questions = questionRepository.findByBranchAndSemesterAndSubjectAndTopicContains(branch, semester, subject, topic);
+            }
         } else {
-            questions = questionRepository.findByBranchAndSemesterAndSubjectAndDifficultyContains(branch, semester, subject, difficulty);
+            if (topic == null || topic.isEmpty()) {
+                questions = questionRepository.findByBranchAndSemesterAndSubjectAndDifficultyContains(branch, semester, subject, difficulty);
+            } else {
+                questions = questionRepository.findByBranchAndSemesterAndSubjectAndDifficultyContains(branch, semester, subject, difficulty);
+
+
+                questions.removeIf(q -> q.getTopic() == null || !q.getTopic().toLowerCase().contains(topic.toLowerCase()));
+            }
         }
+//        if ("MCQ".equals(questionType)){
+//            questions = questionRepository.findByBranchAndSemesterAndSubjectAndTopicAndQuestionTypeContains(branch, semester, subject, topic,questionType);
+//        }else{
+//            questions = questionRepository.findByBranchAndSemesterAndSubjectAndTopicAndQuestionTypeContains(branch, semester, subject, topic, questionType);
+//        }
+
+
         if (questions.isEmpty()) {
             return new ArrayList<>(); // No questions found
         }
 
         questionHelper.initializePheromoneLevels(questions);
-
         List<Question> bestSolutions = new ArrayList<>();
         double bestSolutionScore = 0.0;
 
         for (int i = 0; i < numIterations; i++) {
             List<List<Question>> solutions = new ArrayList<>();
 
-            // Each ant constructs a solution
             for (int j = 0; j < numAnts; j++) {
                 List<Question> solution = questionHelper.constructSolution(questions, difficulty);
                 solutions.add(solution);
             }
 
-            // Update pheromones based on solutions
             questionHelper.updatePheromones(solutions);
 
-            // Determine the best solution in this iteration
             for (List<Question> solution : solutions) {
                 double solutionScore = questionHelper.evaluateSolution(solution);
                 if (solutionScore > bestSolutionScore) {
@@ -80,6 +136,65 @@ public class QuestionService {
 
         return bestSolutions;
     }
+
+    public List<Question> downloadQuestionPaper(String branch, String semester, String subject, String difficulty, String topic, String questionType) {
+        List<Question> questions;
+
+        if ("all".equals(difficulty)) {
+            if (topic == null || topic.isEmpty()) {
+                questions = questionRepository.findByBranchAndSemesterAndSubject(branch, semester, subject);
+            } else {
+                questions = questionRepository.findByBranchAndSemesterAndSubjectAndTopicContains(branch, semester, subject, topic);
+            }
+        } else {
+            if (topic == null || topic.isEmpty()) {
+                questions = questionRepository.findByBranchAndSemesterAndSubjectAndDifficultyContains(branch, semester, subject, difficulty);
+            } else {
+                questions = questionRepository.findByBranchAndSemesterAndSubjectAndDifficultyContains(branch, semester, subject, difficulty);
+
+
+                questions.removeIf(q -> q.getTopic() == null || !q.getTopic().toLowerCase().contains(topic.toLowerCase()));
+            }
+        }
+        if ("MCQ".equals(questionType)) {
+            questions = questionRepository.findByBranchAndSemesterAndSubjectAndTopicAndQuestionTypeContains(branch, semester, subject, topic, questionType);
+        } else if ("Descriptive".equals(questionType)) {
+            questions = questionRepository.findByBranchAndSemesterAndSubjectAndTopicAndQuestionTypeContains(branch, semester, subject, topic, questionType);
+        } else {
+            questions = questionRepository.findByBranchAndSemesterAndSubjectAndTopicAndQuestionTypeContains(branch, semester, subject, topic, questionType);
+        }
+
+
+        if (questions.isEmpty()) {
+            return new ArrayList<>(); // No questions found
+        }
+
+        questionHelper.initializePheromoneLevels(questions);
+        List<Question> bestSolutions = new ArrayList<>();
+        double bestSolutionScore = 0.0;
+
+        for (int i = 0; i < numIterations; i++) {
+            List<List<Question>> solutions = new ArrayList<>();
+
+            for (int j = 0; j < numAnts; j++) {
+                List<Question> solution = questionHelper.constructSolution(questions, difficulty);
+                solutions.add(solution);
+            }
+
+            questionHelper.updatePheromones(solutions);
+
+            for (List<Question> solution : solutions) {
+                double solutionScore = questionHelper.evaluateSolution(solution);
+                if (solutionScore > bestSolutionScore) {
+                    bestSolutionScore = solutionScore;
+                    bestSolutions = new ArrayList<>(solution);
+                }
+            }
+        }
+
+        return bestSolutions;
+    }
+
 
     public Question validateAndAddQuestion(Question question) {
 

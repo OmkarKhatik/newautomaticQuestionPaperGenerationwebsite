@@ -1,46 +1,65 @@
 package com.newautomaticpapergenerationwebsite.service;
+
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Text;
+import com.itextpdf.layout.properties.TextAlignment;
+//import com.itextpdf.layout.property.TextAlignment;
 import com.newautomaticpapergenerationwebsite.model.Question;
+
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 public class PDFGenerator {
 
-    public static byte[] generateQuestionPaperPDF(List<Question> questions, String name, String code, int marks, int choice, String time) {
+    public static byte[] generateQuestionPaperPDF(List<Question> questions, String name, String subject, String code, int marks, String time) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         PdfWriter writer = new PdfWriter(byteArrayOutputStream);
         PdfDocument pdfDoc = new PdfDocument(writer);
         Document document = new Document(pdfDoc);
 
-//        document.add(new Paragraph("************************************************ "));
-//        document.add(new Paragraph("Generated Question Paper"));
-//        document.add(new Paragraph("Btech First Semester Examination  "));
-//        document.add(new Paragraph("_________________________________________________"));
-//        document.add(new Paragraph(""));
-////        document.add(new Paragraph("************************************************")); // Add a blank line
-////        
-        // Add the custom inputs to the PDF
-        document.add(new Paragraph("Question Paper Name: " + name));
-        document.add(new Paragraph("Code: " + code));
-        document.add(new Paragraph("Marks Per Module: " + marks));
-        document.add(new Paragraph("Choice Per Module: " + choice));
-        document.add(new Paragraph("Time for Exam: " + time));
-        document.add(new Paragraph("************************************************"));
-        document.add(new Paragraph(" ")); // Blank line
-        
+        // **Title Section**
+        document.add(new Paragraph(name)
+                .setBold().setTextAlignment(TextAlignment.CENTER).setFontSize(14));
+        document.add(new Paragraph("B.Tech. Examination")
+                .setBold().setTextAlignment(TextAlignment.CENTER).setFontSize(12));
+        document.add(new Paragraph(name.toUpperCase())
+                .setBold().setTextAlignment(TextAlignment.CENTER).setFontSize(14));
+        document.add(new Paragraph("Code: " + code + "   |   Maximum Marks: " + marks + "   |   Time: " + time)
+                .setTextAlignment(TextAlignment.CENTER).setFontSize(10));
+
+        document.add(new Paragraph("\nINSTRUCTIONS TO CANDIDATES").setBold().setUnderline().setFontSize(12));
+        document.add(new Paragraph("1. All questions carry marks as indicated."));
+        document.add(new Paragraph("2. Answer all questions within the given time."));
+        document.add(new Paragraph("3. Assume suitable data wherever necessary."));
+        document.add(new Paragraph("4. Write your answers neatly and legibly.\n"));
+
+        // **Question Section**
+        document.add(new Paragraph("\n\n----------------------")
+                .setBold().setTextAlignment(TextAlignment.CENTER));
+        document.add(new Paragraph("SECTION A - Multiple Choice Questions").setBold().setFontSize(11));
+        int questionNumber = 1;
         for (Question question : questions) {
-            document.add(new Paragraph("Question : "+question.getQuestionText()));
-//            document.add(new Paragraph("Difficulty: " + question.getDifficulty()));
-            document.add(new Paragraph(" "));
+            document.add(new Paragraph(questionNumber + ". " + question.getQuestionText())
+                    .setBold().setFontSize(11));
+////            document.add(new Paragraph("   (Choice Available: " + choice + ")\n"));
+            questionNumber++;
         }
-        document.add(new Paragraph(" "));
-        document.add(new Paragraph("-----------Best of luck----------- "));
+        document.add(new Paragraph("SECTION B - Descriptive Questions").setBold().setFontSize(11));
+        int questionNo = 1;
+        for (Question question : questions) {
+            document.add(new Paragraph(questionNo + ". " + question.getQuestionText())
+                    .setBold().setFontSize(11));
+////            document.add(new Paragraph("   (Choice Available: " + choice + ")\n"));
+            questionNo++;
+        }
+        // **Closing Message**
+        document.add(new Paragraph("\n\n----------- Best of Luck! -----------")
+                .setBold().setTextAlignment(TextAlignment.CENTER));
 
         document.close();
-
         return byteArrayOutputStream.toByteArray();
     }
 }

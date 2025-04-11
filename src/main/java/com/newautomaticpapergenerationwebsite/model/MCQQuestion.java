@@ -1,13 +1,18 @@
 package com.newautomaticpapergenerationwebsite.model;
 
+
 import jakarta.persistence.*;
 
-@Entity
+import java.util.List;
 
-public class Question {
+@Table
+@Entity
+public class MCQQuestion {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
+
     @Column(unique = true)
     private String questionText;
     private String difficulty;
@@ -15,30 +20,16 @@ public class Question {
     private String semester;
     private String subject;
     private String branch;
-    private String topic;
-    private String questionType;
 
-    public Question(Long id, String questionText, String difficulty, String module, String semester, String subject, String branch, String topic, String questionType) {
-        this.id = id;
-        this.questionText = questionText;
-        this.difficulty = difficulty;
-        this.module = module;
-        this.semester = semester;
-        this.subject = subject;
-        this.branch = branch;
-        this.topic = topic;
-        this.questionType = questionType;
-    }
+    @ElementCollection
+    private List<String> options;
+    private String correctAnswer;
 
-    public Question() {
-
-    }
-
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -90,19 +81,19 @@ public class Question {
         this.branch = branch;
     }
 
-    public String getTopic() {
-        return topic;
+    public List<String> getOptions() {
+        return options;
     }
 
-    public void setTopic(String topic) {
-        this.topic = topic;
+    public void setOptions(List<String> options) {
+        this.options = options;
     }
 
-    public String getQuestionType() {
-        return questionType;
+    public String getCorrectAnswer() {
+        return correctAnswer;
     }
 
-    public void setQuestionType(String questionType) {
-        this.questionType = questionType;
+    public void setCorrectAnswer(String correctAnswer) {
+        this.correctAnswer = correctAnswer;
     }
 }

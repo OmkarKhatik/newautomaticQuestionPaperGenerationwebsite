@@ -8,7 +8,7 @@ import com.newautomaticpapergenerationwebsite.repo.LoginRepo;
 @Service
 public class LoginService {
 	@Autowired
-	private NewLoginRepo loginRepo;
+	private LoginRepo loginRepo;
 
 //	public LoginModel saveUser(LoginModel user) {
 //		return userRepository.save(user);

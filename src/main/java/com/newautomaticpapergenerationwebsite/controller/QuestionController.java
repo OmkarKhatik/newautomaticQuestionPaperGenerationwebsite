@@ -60,28 +60,20 @@ public class QuestionController {
         return ResponseEntity.ok(questionService.validateAndAddQuestion(question));
     }
 
+//    @GetMapping("/generate")
+//    public ResponseEntity<List<Question>> generateQuestionPaper(@RequestParam String branch,
+//                                                                @RequestParam String semester, @RequestParam String subject, @RequestParam String difficulty) {
+//        return ResponseEntity.ok(questionService.generateQuestionPaper(branch, semester, subject, difficulty));
+//    }
+
     @GetMapping("/generate")
     public ResponseEntity<List<Question>> generateQuestionPaper(@RequestParam String branch,
-                                                                @RequestParam String semester, @RequestParam String subject, @RequestParam String difficulty) {
-        return ResponseEntity.ok(questionService.generateQuestionPaper(branch, semester, subject, difficulty));
+                                                                @RequestParam String semester,
+                                                                @RequestParam String subject,
+                                                                @RequestParam String difficulty,
+                                                                @RequestParam(required = false) String topic){
+        return ResponseEntity.ok(questionService.generateQuestionPaper(branch, semester, subject, difficulty, topic));
     }
-
-//	@GetMapping("/download")
-//	public ResponseEntity<byte[]> downloadQuestionPaper(@RequestParam String branch, @RequestParam String semester,
-//			@RequestParam String subject, @RequestParam String difficulty) {
-//		List<Question> questions = questionService.generateQuestionPaper(branch, semester, subject, difficulty);
-//		byte[] pdfBytes = PDFGenerator.generateQuestionPaperPDF(questions);
-////		List<Question> questions = questionService.generateQuestionPaper(branch, semester, subject, difficulty);
-////		questions.forEach(q -> System.out.println(q.getQuestionText()));
-////		byte[] pdfBytes = PDFGenerator.generateQuestionPaperPDF(questions);
-//
-//
-//		HttpHeaders headers = new HttpHeaders();
-//		headers.setContentType(MediaType.APPLICATION_PDF);
-//		headers.setContentDispositionFormData("attachment", "question_paper.pdf");
-//
-//		return ResponseEntity.ok().headers(headers).body(pdfBytes);
-//	}
 
     //	new getmapping
     @GetMapping("/download")
@@ -90,16 +82,18 @@ public class QuestionController {
             @RequestParam String semester,
             @RequestParam String subject,
             @RequestParam String difficulty,
+            @RequestParam String topic,
+            @RequestParam String questionType,
             @RequestParam String name,
             @RequestParam String code,
             @RequestParam int marks,
-            @RequestParam int choice,
+//            @RequestParam int choice,
             @RequestParam String time) {
 
-        List<Question> questions = questionService.generateQuestionPaper(branch, semester, subject, difficulty);
+        List<Question> questions = questionService.downloadQuestionPaper(branch, semester, subject, difficulty, topic,questionType);
 
         // Pass these inputs to the PDF generator
-        byte[] pdfBytes = PDFGenerator.generateQuestionPaperPDF(questions, name, code, marks, choice, time);
+        byte[] pdfBytes = PDFGenerator.generateQuestionPaperPDF(questions, subject,name, code, marks, time);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);

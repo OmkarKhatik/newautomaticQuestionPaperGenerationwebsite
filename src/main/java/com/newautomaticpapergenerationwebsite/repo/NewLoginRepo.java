@@ -31,6 +31,9 @@ public class NewLoginRepo {
 	 public LoginModel findByUsername(String username) {
 		 return LOGIN_MODELS.stream().filter(loginmodel -> loginmodel.getUsername() == username).findAny().orElse(null);
 	 }
+
+
+
 	 
 	 
 }
